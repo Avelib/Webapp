@@ -1,5 +1,5 @@
 FROM ubuntu
-MAINTAINER Vince
+MAINTAINER Vincen
 RUN apt update && apt install nginx -y
 EXPOSE 80
 ADD static-website-example/ /var/www/html/
