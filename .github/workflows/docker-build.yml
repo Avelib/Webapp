@@ -1,0 +1,28 @@
+name: CI  # Nom du workflow
+
+on:
+  push:
+    branches:
+      - main  # Déclenche le workflow lors des pushs sur la branche main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Environnement d'exécution
+
+    steps:
+      # Étape 1 : Checkout du code
+      - name: Checkout code
+        uses: actions/checkout@v4  # Mettre à jour à v4
+
+      # Étape 2 : Log in to Docker Hub
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      # Étape 3 : Build Docker image
+      - name: Build Docker image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/apache-docker:latest .
+
+      # Étape 4 : Push Docker image to Docker Hub
+      - name: Push Docker image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/apache-docker:latest  
+
